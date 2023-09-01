@@ -27,42 +27,25 @@ internal class FileReadWriter
         }
     }
 
-    public bool WriteStep(int threadId)
+    public void WriteStep(int threadId)
     {   
         using (FileStream fileStream = new FileStream(_filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
         // using OpenOrCreate because we need access for writing, just Open doesn't provide it
         {
-            if (fileStream.CanRead)
+            using (StreamReader reader = new StreamReader(fileStream))
             {
-                using (StreamReader reader = new StreamReader(fileStream))
+                string? lastLine = ReadLastLine(reader);
+                // we shouldn't close StreamReader before opening StreamWriter - it gives access errror
+                if (lastLine != null)
                 {
-                    string? lastLine = ReadLastLine(reader);
-                    // we shouldn't close StreamReader before opening StreamWriter - it gives access errror
-                    if (lastLine != null)
+                    int? stepNumber = FindFirstNumber(lastLine);
+                    if (stepNumber != null)
                     {
-                        if (fileStream.CanWrite)
-                        {
-                            int? stepNumber = FindFirstNumber(lastLine);
-                            if (stepNumber != null)
-                            {
-                                WriteLastLineTimeStamp(fileStream, stepNumber.Value + 1, threadId);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("The file stream is not writable");
-                            return false;
-                        }
+                        WriteLastLineTimeStamp(fileStream, stepNumber.Value + 1, threadId);
                     }
                 }
             }
-            else
-            {
-                Console.WriteLine("The file stream is not readable");
-                return false;
-            }
         }
-        return true;
     }
 
     private string? ReadLastLine(StreamReader reader)

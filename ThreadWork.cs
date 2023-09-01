@@ -15,7 +15,6 @@ internal class ThreadWork
         _stopEvent = stopEvent;
         _lock = lockObject;
         _thread = new Thread(new ThreadStart(ThreadProc));
-        
     }
 
     public void Start()
@@ -30,17 +29,15 @@ internal class ThreadWork
         {
             for (; _numberOfWrites < _maxNumberOfWrites; _numberOfWrites++)
             {
-                bool result = false;
-                lock( _lock )
+                lock (_lock)
                 {
-                    result = _fileReadWriter.WriteStep(_thread.ManagedThreadId);
+                    _fileReadWriter.WriteStep(_thread.ManagedThreadId);
                 }
-                if (!result)
-                {
-                    break;
-                }
-                Thread.Yield();
             }
+                
+            // if we call:
+            // Thread.Sleep(10);
+            // we had multiple thread switching
         }
         catch (Exception ex)
         {

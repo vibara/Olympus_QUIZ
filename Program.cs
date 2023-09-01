@@ -2,9 +2,6 @@
 // NOTE: we don't need a namespace
 // NOTE: using Thread, not Task - as in the description, it should be multiple threads, but multiple tasks can run on a single thread
 
-
-using System.Diagnostics.Metrics;
-using System.Threading;
 const int numberOfThreads = 10;
 const int maxNumberOfWrites = 10;
 const string filePath = "/log/out.txt";
@@ -22,6 +19,14 @@ catch (Exception ex)
 }
 
 if (completedFirstStep)
+{
+    //NativeThreads();
+    ParallelTasks();
+}
+Console.WriteLine("Press <Enter> to exit");
+Console.Read();
+
+void NativeThreads()
 {
     try
     {
@@ -46,11 +51,42 @@ if (completedFirstStep)
     {
         Console.WriteLine($"Exception in main thread: {ex.Message}");
     }
+
 }
-Console.WriteLine("Press <Enter> to exit");
-Console.Read();
 
 
+async void ParallelTasks()
+{
+    try
+    {
+        var tasks = new Task[numberOfThreads];
+        for (int i = 0; i < numberOfThreads; i++)
+        {
+            tasks[i] = Task.Run(() => OneTask(maxNumberOfWrites, readWriter));
+        }
+        Task.WaitAll(tasks);
+        Console.WriteLine("All tasks completed");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception in main thread: {ex.Message}");
+    }
+}
+
+async void OneTask(int maxNumberOfWrites, FileReadWriter fileReadWriter)
+{
+    int threadId = Thread.CurrentThread.ManagedThreadId;
+    Console.WriteLine($"Task {threadId} started");
+    for (int numberOfWrites = 0; numberOfWrites < maxNumberOfWrites; numberOfWrites++)
+    {
+        lock(lockObject)
+        {
+            fileReadWriter.WriteStep(threadId);
+        }
+        await Task.Yield();
+    }
+    Console.WriteLine($"Task {threadId} stopped");
+}
 
 
 
