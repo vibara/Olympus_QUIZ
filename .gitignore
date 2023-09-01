@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/obj/Debug/net6.0/Olympus_QUIZ.AssemblyInfoInputs.cache
+/obj/Debug/net6.0/Olympus_QUIZ.csproj.AssemblyReference.cache
+/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+/obj/Debug/net6.0/Olympus_QUIZ.AssemblyInfo.cs
+/obj/Debug/net6.0/Olympus_QUIZ.GeneratedMSBuildEditorConfig.editorconfig
+/obj/Debug/net6.0/Olympus_QUIZ.GlobalUsings.g.cs
+*.cache
+/obj
+/bin/Debug/net6.0
+/.vs/Olympus_QUIZ/v17
+/.vs/Olympus_QUIZ/FileContentIndex
