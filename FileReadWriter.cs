@@ -10,20 +10,11 @@ internal class FileReadWriter
         this._filePath = filePath; 
     }
 
-    public bool WriteFirstStep()
+    public void WriteFirstStep()
     {
         using (FileStream fileStream = new FileStream(_filePath, FileMode.Create, FileAccess.Write))
         {
-            if (fileStream.CanWrite)
-            {
-                WriteLastLineTimeStamp(fileStream, 0, 0);
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("The file stream is not writable");
-                return false;
-            }
+             WriteLastLineTimeStamp(fileStream, 0, 0);
         }
     }
 
