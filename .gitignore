@@ -15,3 +15,6 @@
 /.vs/Olympus_QUIZ/FileContentIndex
 /.vs/Olympus_QUIZ/DesignTimeBuild/.dtbcache.v2
 /.vs/ProjectEvaluation
+/bin/Release/net6.0/publish
+/bin/Release/net6.0
+/Properties/PublishProfiles
