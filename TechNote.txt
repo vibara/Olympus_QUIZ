@@ -1,6 +1,8 @@
 Project Olympus_QUIZ
+implemtation: Vladimir Baranov
 
 Task:
+
 Using C# language, dotnet 6 runtime.
 Create a Windows console application which does the following:
 1. Create a text file at location /log/out.txt. Initialize this file by writing the string “0, 0, current_time_stamp” 
@@ -20,3 +22,27 @@ added to synchronize access to the file shared resource):
 
 Implementation:
 
+Windows console application, .NET 6.0
+
+FileReadWriter - class for reading and writing a file. 
+	First step: Creates a file based on a location.
+	Write step: Reads the last line from the file, checks the first number as a last counter value
+	(alternative method is remembering last line position in the file from last thread - 
+	but the Step 2/b of the task describes reading from the file as mandatory)
+	
+ParallelTasks - class for running multiple Tasks (System.Threading.Tasks module). Method Run starts the tasks and waits stopping all tasks (threads).
+	One task runs one seprate thread.
+	Method OneTask - a method for async writing a line into the output file. The method calls await Task.Yield(); to switch to another thread.
+	
+	NOTE: Tried to use "native" Thread class to start separate threads and manage them more explicitly. But I cannot enforce thread switching without Sleep in that case,
+		  the system keeps all 10 writes in one thread/switches to another thread in most cases.
+		  
+Deployment:
+	to Docker, using Dockerfile in the same folder.
+	
+	Build in Docker (in the project source folder): 
+		docker build -t olympus_quiz .
+	Run in Docker: 
+		docker run -i -v c:\junk:/log olympus_quiz
+		
+	
