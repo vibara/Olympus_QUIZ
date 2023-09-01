@@ -1,0 +1,22 @@
+Project Olympus_QUIZ
+
+Task:
+Using C# language, dotnet 6 runtime.
+Create a Windows console application which does the following:
+1. Create a text file at location /log/out.txt. Initialize this file by writing the string “0, 0, current_time_stamp” 
+to the first line of the file where "current_time_stamp" is a string of the form HH:MM:SS.mmm 
+(HH = hours, MM = minutes, SS=seconds, mmm = milliseconds
+to 3 decimal places.)
+2. Launch 10 threads to run simultaneously. Each thread should do the following as fast as
+possible (i.e. do not insert sleeps or spin waits – however appropriate protection must be
+added to synchronize access to the file shared resource):
+	a. Open the file
+	b. Read the first number on the last line of the file. This is your counter.
+	c. Increment this counter
+	d. Append to the next line in the file “incremented_counter_value, thread_id, current_time_stamp” where thread_id is the current thread id.
+	e. Close the file
+3. Each thread should gracefully terminate after it has performed 10 writes to the file.
+4. When all ten threads have terminated, wait for a character press, then exit.
+
+Implementation:
+
