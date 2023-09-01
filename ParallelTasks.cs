@@ -46,11 +46,14 @@ internal class ParallelTasks
                 await Task.Yield();     // NOTE: after that the system can switch to another thread/task 
             }
             Console.WriteLine($"Task {threadId} stopped");
-            stopEvent.Set();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Exception in task {threadId}: {ex.Message}");
+        }
+        finally
+        {
+            stopEvent.Set();
         }
     }
 }
